@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: redis_cache
+    ports:
+      - "6379:6379"
+
+  server:
+    build: .
+    container_name: wordcount_server
+    command: python /app/server/server.py
+    environment:
+      - REDIS_HOST=redis
+      - SERVER_ID=server-1
+    volumes:
+      - ./server:/app/server
+      - ./data:/data
+    depends_on:
+      - redis
+
+  client:
+    build: .
+    container_name: wordcount_client
+    command: python /app/client/client.py
+    environment:
+      - TARGET_HOST=server
+      - TARGET_PORT=18861
+    volumes:
+      - ./client:/app/client
+    depends_on:
+      - server

@@ -1,0 +1,8 @@
+__pycache__/
+data/*.txt
+results/
+report/*.aux
+report/*.log
+report/*.bbl
+report/*.blg
+report/*.out
